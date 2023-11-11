@@ -5,11 +5,11 @@ let crypto = require('crypto');
 const UserSchema = new Schema({
     firstName: {
         type:String,
-        required: [true, 'Item name is required']
+        required: [true, 'First name is required']
     }, 
     lastName: {
         type:String,
-        required: [true, 'Item name is required']
+        required: [true, 'Last name is required']
     },
     email: {
       type: String,
