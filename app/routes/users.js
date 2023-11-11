@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/users');
 
+//routes for users
 router.get('/getu', userController.list);
 router.get('/getu/:userID', userController.userByID);
 router.put('/putu/:userID',userController.update);

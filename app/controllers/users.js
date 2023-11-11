@@ -1,6 +1,6 @@
 const Usermodel = require('../models/users');
 
-
+//get all users
 module.exports.list = async function(req, res, next) {
     try {
         let list = await Usermodel.find({}, '-hashed_password -salt');
@@ -10,6 +10,7 @@ module.exports.list = async function(req, res, next) {
     }
 }
 
+//get user by id
 module.exports.userByID = async function(req, res, next){
     try {
         console.log(`/getu/${req.params.userID}`);
@@ -37,6 +38,8 @@ module.exports.read = function(req, res) {
     return res.json(req.profile)
 }
 
+//update users
+
 module.exports.update = async function (req, res, next){
      try {
             let userID = req.params.userID;
@@ -63,6 +66,7 @@ module.exports.update = async function (req, res, next){
     }
 }
 
+//create users
 module.exports.create = async function (req, res, next){
     try {
         let newUser = new Usermodel(req.body);
@@ -81,6 +85,7 @@ module.exports.create = async function (req, res, next){
     }
 }
 
+//remove users by id
 module.exports.remove = async function (req, res, next){
     try{
         console.log("/deleteu/:userID");

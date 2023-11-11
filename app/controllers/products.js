@@ -33,7 +33,7 @@ module.exports.listById = async function(req, res, next) {
 
 }
 
-// To modify a product
+// To modify a product by id
 module.exports.modify = async function(req, res, next) {
   try {
     console.log("/:userID/modify");
@@ -75,7 +75,7 @@ module.exports.post = async function(req, res, next) {
 }
 }
 
-// To delete a product
+// To delete a productby id
 module.exports.delete = async function(req, res, next) {
   try {
     console.log("/:userID/:productID/delete");
