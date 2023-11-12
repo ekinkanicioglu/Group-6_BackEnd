@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-let crypto = require('crypto');
+let bcrypt = require('bcrypt');
+
 
 const UserSchema = new Schema({
     firstName: {
         type:String,
-        required: [true, 'Item name is required']
+        required: [true, 'First name is required']
     }, 
     lastName: {
         type:String,
-        required: [true, 'Item name is required']
+        required: [true, 'Last name is required']
     },
     email: {
       type: String,
@@ -65,14 +66,22 @@ const UserSchema = new Schema({
         throw new Error('Password must be at least 6 characters.')
       }
       else {
-        this.salt = Buffer.from(crypto.randomBytes(16).toString('base64'), 'base64');
         this.hashed_password = this.hashPassword(password);
       }
     });
   
-  UserSchema.methods.hashPassword = function (password) {
-    return crypto.pbkdf2Sync(password, this.salt, 10000, 64, 'sha512').toString('base64');
-  };
+  module.exports = async function (password) {
+    console.log("here");
+    try {
+      const saltRounds = 10;
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      return hashedPassword;
+  } catch (error) {
+      console.error('Error hashing password:', error);
+      throw new Error('Error hashing password');
+  }
+    };
   
   UserSchema.methods.authenticate = function (password) {
     return this.hashed_password === this.hashPassword(password);

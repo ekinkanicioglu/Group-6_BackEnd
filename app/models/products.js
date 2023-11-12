@@ -8,7 +8,7 @@ let productsModel = mongoose.Schema(
             validate: {
                 validator: function(value) {
                     // validation for input length >0
-                    return alue.length > 0;
+                    return value.length > 0;
                 },
                 message: 'Item name is required'
             }
@@ -46,11 +46,7 @@ let productsModel = mongoose.Schema(
             type: Date,
             default: Date.now,
             immutable: true
-          },
-        owner: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
+          }
     },
     {
         collection: "productlist"
