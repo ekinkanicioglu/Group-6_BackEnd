@@ -1,5 +1,5 @@
 const Usermodel = require('../models/users');
-
+let bcrypt = require('bcrypt');
 
 module.exports.list = async function(req, res, next) {
     try {
@@ -63,19 +63,36 @@ module.exports.update = async function (req, res, next){
     }
 }
 
+async function hashPassword(password){
+    try {
+      const saltRounds = 10;
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      console.log(hashedPassword);
+      return hashedPassword;
+  } catch (error) {
+      console.error('Error hashing password:', error);
+      throw new Error('Error hashing password');
+  }
+  }
+  
+
 module.exports.create = async function (req, res, next){
     try {
         let newUser = new Usermodel(req.body);
+        newUser.hashed_password = await hashPassword(newUser.hashed_password);
+
+        console.log(newUser);
+
 
         let result = await Usermodel.create(newUser);
-        res.json(
-            {
-                success: true,
-                message: "User created sucessfully."
-            }
-        );
-    } 
-    catch (error) {
+        res.json({
+            success: true,
+            message: "User created successfully.",
+            user: result
+        });
+        console.log(newUser.hashed_password);
+    } catch (error) {
         console.error("Cannot create user", error);
         res.status(500).send("Invalid user create");
     }
@@ -99,4 +116,6 @@ module.exports.remove = async function (req, res, next){
         res.status(500).send("Invalid delete");
     }
 }
-
+module.exports.signup_get = async function(req, res, next) {
+    res.send('SignUp');
+}
