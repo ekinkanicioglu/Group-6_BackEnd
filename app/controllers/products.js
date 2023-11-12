@@ -36,25 +36,30 @@ module.exports.listById = async function(req, res, next) {
 // To modify a product
 module.exports.modify = async function(req, res, next) {
   try {
-    console.log("/:userID/modify");
+    let productID = req.params.productID;
+    let updatedProduct = productsModel(req.body);
+    updatedProduct._id = productID;
 
-    // Check modifier is the owner of the product or not
-    const modifyProduct = await productsModel.findById(req.params.productID);
-    if (!modifyProduct) {
-      return res.status(404).send("Product not found");
+    let result = await productsModel.updateOne({ _id: productID }, updatedProduct);
+
+    if (result.modifiedCount > 0) {
+        res.json(
+            {success: true,
+            message: "Product updated sucessfully."
+        });
     }
+    // Express will catch this on its own.
+    else {
+         throw new Error('Product not updated. Are you sure it exists?')
+        }
 
-    if (modifyProduct.owner.toString() !== req.params.userID) {
-      return res.status(403).send("Permission denied. You are not the owner of this product.");
-    }
-
-    // Logic to modify a product
-    res.send("Modify a product");
-  } catch (error) {
-    console.error("Error in modify:", error);
-    res.status(500).send("Invalid modification");
-  }
 }
+catch(error){
+console.error("Error in update:", error);
+res.status(500).send("Invalid update");
+}
+}
+
 
 // To add a product
 module.exports.post = async function(req, res, next) {
@@ -78,22 +83,26 @@ module.exports.post = async function(req, res, next) {
 // To delete a product
 module.exports.delete = async function(req, res, next) {
   try {
-    console.log("/:userID/:productID/delete");
+    const productID = req.params.productID;
+    const result = await productsModel.deleteOne({ _id: productID });
 
-    // Ensure the user delete the item is the owner of the product
-    const deleteProduct = await productsModel.findById(req.params.productID);
-    if (!deleteProduct) {
-      return res.status(404).send("Product not found");
+    if (!result) {
+        return res.status(404).send("User not found");
     }
 
-    if (deleteProduct.owner.toString() !== req.params.userID) {
-      return res.status(403).send("Permission denied. You are not the owner of this product.");
+    console.log("====> Result: ", result);
+    if (result.deletedCount > 0) {
+        res.json(
+            {
+                success: true,
+                message: "product deleted"
+            }
+        );
+      } else {
+          return res.status(404).send("product not found");
+      }
+    } catch (error) {
+        console.error("Error in delete:", error);
+        res.status(500).send("Invalid delete");
     }
-
-    // Logic to delete a product
-    res.send("Delete a product");
-  } catch (error) {
-    console.error("Error in delete:", error);
-    res.status(500).send("Invalid delete");
-  }
 }
