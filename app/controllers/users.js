@@ -119,3 +119,6 @@ module.exports.remove = async function (req, res, next){
 module.exports.signup_get = async function(req, res, next) {
     res.send('SignUp');
 }
+module.exports.signIn_get = async function(req, res, next) {
+    res.send('signIn');
+}
