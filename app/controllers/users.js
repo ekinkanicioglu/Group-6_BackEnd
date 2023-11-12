@@ -36,7 +36,6 @@ module.exports.read = function(req, res) {
     req.profile.salt = undefined
     return res.json(req.profile)
 }
-//update users
 
 module.exports.update = async function (req, res, next){
      try {
@@ -99,28 +98,20 @@ module.exports.create = async function (req, res, next){
     }
 }
 
-//remove users by id
 module.exports.remove = async function (req, res, next){
-    try {
-        const userID = req.params.userID;
-        const result = await Usermodel.deleteOne({ _id: userID });
-
-        if (!result) {
+    try{
+        console.log("/deleteu/:userID");
+        const deleteUser = await Usermodel.findById(req.params.userID);
+        if (!deleteUser) {
             return res.status(404).send("User not found");
         }
 
-        console.log("====> Result: ", result);
-        if (result.deletedCount > 0) {
-            res.json(
-                {
-                    success: true,
-                    message: "User deleted"
-                }
-            );
-        } else {
-            return res.status(404).send("User not found");
-        }
-    } catch (error) {
+        // if (deleteUser.owner.toString() !== req.params.userID) {
+        //     return res.status(403).send("Permission denied. Inappropriate user.");
+        // }
+        res.send("Delete a user");
+    }
+    catch(error) {
         console.error("Error in delete:", error);
         res.status(500).send("Invalid delete");
     }
