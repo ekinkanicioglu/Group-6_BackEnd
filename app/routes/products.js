@@ -7,7 +7,7 @@ const usersController = require('../controllers/users');
 
 // Routes
 
-router.get('/', productsController.list);
+router.get('/getp', productsController.list);
 router.get('/getp/:productID', productsController.listById);
 
 router.put('/modify/:productID', authController.requireLogin, productsController.hasAuthorization,productsController.modify);
