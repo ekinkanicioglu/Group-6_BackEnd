@@ -32,11 +32,8 @@ module.exports.userByID = async function (req, res, next) {
     }
 }
 
-module.exports.read = function (req, res) {
-    req.profile.hashed_password = undefined
-    req.profile.salt = undefined
-    return res.json(req.profile)
-}
+module.exports.read = async function (req, res) {
+
 
     try {
         
@@ -63,8 +60,8 @@ module.exports.read = function (req, res) {
         console.error("Error in update:", error);
         res.status(500).send("Invalid update");
     }
-}
 
+}
 
 module.exports.create = async function (req, res, next) {
     try {
