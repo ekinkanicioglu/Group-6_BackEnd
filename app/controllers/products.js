@@ -38,44 +38,24 @@ module.exports.listById = async function(req, res, next) {
 // To modify a product
 module.exports.modify = async function(req, res, next) {
   try {
-        let productID = req.params.productID;
-        let updatedProduct = productsModel(req.body);
-        updatedProduct._id = productID;
+    console.log("/:userID/modify");
 
-
-        // Check if the seller is provided
-        if (!req.body.seller || req.body.seller.trim() === "") {
-            throw new Error('login is required.');
-        }
-
-        const product = await productsModel.findById(productID);
-
-        if (!product) {
-            throw new Error('Product not found. Are you sure it exists?');
-            }
-        
-        if (product.owner.toString() !== req.auth.id) {
-            throw new Error('Permission denied. You are not the owner of this product.');
-            }
-
-        let result = await productsModel.updateOne({ _id: productID }, updatedProduct);
-
-        if (result.modifiedCount > 0) {
-            res.json(
-                {success: true,
-                message: "Product updated sucessfully."
-            });
-        }
-        // Express will catch this on its own.
-        else {
-            throw new Error('Product not updated. Are you sure it exists?')
-            }
-
-}
-    catch(error){
-    console.error("Error in update:", error);
-    res.status(500).send("Invalid update");
+    // Check modifier is the owner of the product or not
+    const modifyProduct = await productsModel.findById(req.params.productID);
+    if (!modifyProduct) {
+      return res.status(404).send("Product not found");
     }
+
+    if (modifyProduct.owner.toString() !== req.params.userID) {
+      return res.status(403).send("Permission denied. You are not the owner of this product.");
+    }
+
+    // Logic to modify a product
+    res.send("Modify a product");
+  } catch (error) {
+    console.error("Error in modify:", error);
+    res.status(500).send("Invalid modification");
+  }
 }
 
 
@@ -106,32 +86,24 @@ module.exports.create = async function(req, res, next) {
 // To delete a product
 module.exports.delete = async function(req, res, next) {
   try {
-        if (!req.body.seller || req.body.seller.trim() === "") {
-            throw new Error('login is required.');
-        }
-        const productID = req.params.productID;
-        const result = await productsModel.deleteOne({ _id: productID });
+    console.log("/:userID/:productID/delete");
 
-        if (!result) {
-            return res.status(404).send("User not found");
-        }
-
-        console.log("====> Result: ", result);
-        if (result.deletedCount > 0) {
-            res.json(
-                {
-                    success: true,
-                    message: "product deleted"
-                }
-            );
-        } else {
-            return res.status(404).send("product not found");
-            }
-
-    } catch (error) {
-        console.error("Error in delete:", error);
-        res.status(500).send("Invalid delete");
+    // Ensure the user delete the item is the owner of the product
+    const deleteProduct = await productsModel.findById(req.params.productID);
+    if (!deleteProduct) {
+      return res.status(404).send("Product not found");
     }
+
+    if (deleteProduct.owner.toString() !== req.params.userID) {
+      return res.status(403).send("Permission denied. You are not the owner of this product.");
+    }
+
+    // Logic to delete a product
+    res.send("Delete a product");
+  } catch (error) {
+    console.error("Error in delete:", error);
+    res.status(500).send("Invalid delete");
+  }
 }
 
 module.exports.hasAuthorization = async function(req, res, next){
