@@ -6,6 +6,7 @@ const usersController = require('../controllers/users');
 
 
 // Routes
+<<<<<<< Updated upstream
 
 router.get('/', productsController.list);
 router.get('/getp/:productID', productsController.listById);
@@ -18,6 +19,13 @@ authController.requireLogin,
 
 router.delete('/deletep/:productID', authController.requireLogin, usersController.isAdmin, productsController.delete);
 
+=======
+router.get(basePath, productsController.list);
+router.get(basePath + '/getp/:productID', productsController.listById);
+router.put(basePath + '/putp/:productID/', productsController.modify);
+router.post(basePath + '/postp', productsController.post);
+router.delete(basePath + '/deletep/:productID', productsController.delete);
+>>>>>>> Stashed changes
 
 module.exports = router;
 
