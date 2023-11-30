@@ -8,7 +8,6 @@ var cors = require('cors');
 var indexRouter = require('../app/routes/index');
 var usersRouter = require('../app/routes/users');
 var productRouter = require('../app/routes/products');
-
 var app = express();
 
 app.use(logger('dev'));

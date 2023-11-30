@@ -46,7 +46,11 @@ let productsModel = mongoose.Schema(
             type: Date,
             default: Date.now,
             immutable: true
-          }
+          },
+
+        sellerID: {
+            type: String
+        }
     },
     {
         collection: "productlist"
