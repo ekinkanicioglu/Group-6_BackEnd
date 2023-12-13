@@ -45,6 +45,7 @@ module.exports.modify = async function(req, res, next) {
     console.error("Error in modify:", error);
     res.status(500).send("Invalid modification");
   }
+}
 
 module.exports.listAvailable = async function (req, res, next) {
     try {
@@ -210,13 +211,13 @@ module.exports.delete = async function(req, res, next) {
     }
 }
 
-module.exports.hasAuthorization = async function(req, res, next){
+module.exports.hasAuthorization = async function (req, res, next) {
     console.log("Payload", req.auth);
     const product = await productsModel.findById(req.params.productID);
 
     let authorized = req.auth.id == product.sellerID;
     console.log(authorized);
-    if(!authorized){
+    if (!authorized) {
         return res.status('403').json(
             {
                 success: false,
@@ -224,5 +225,4 @@ module.exports.hasAuthorization = async function(req, res, next){
             }
         )
     }
-    next();
-}
+    
