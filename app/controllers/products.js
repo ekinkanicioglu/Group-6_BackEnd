@@ -82,7 +82,6 @@ module.exports.modify = async function(req, res, next) {
 // To add a product
 module.exports.create = async function(req, res, next) {
         try {
-            console.log("I am here =====");
             let newProduct = new productsModel(req.body);
             console.log(req.auth);
             let sellerID = req.auth.id;
