@@ -6,13 +6,20 @@ const usersController = require('../controllers/users');
 
 
 // Routes
-
-router.get('/', productsController.list);
+//list routes
+router.get('/',  productsController.listAvailable);
+router.get('/myProducts', authController.requireLogin, productsController.listMyProducts);
+router.get('/allProducts',productsController.listAll);
 router.get('/getp/:productID', productsController.listById);
 
-router.put('/modify/:productID', authController.requireLogin, productsController.hasAuthorization,productsController.modify);
+router.put('/modify/:productID', 
+authController.requireLogin, 
+productsController.hasAuthorization,
+productsController.modify);
 
-router.post('/create/', authController.requireLogin, productsController.create);
+router.post('/create', 
+authController.requireLogin,
+ productsController.create);
 
 router.delete('/deletep/:productID', authController.requireLogin, usersController.isAdmin, productsController.delete);
 
