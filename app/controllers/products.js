@@ -225,4 +225,4 @@ module.exports.hasAuthorization = async function (req, res, next) {
             }
         )
     }
-    
+}
