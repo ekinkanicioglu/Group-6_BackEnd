@@ -171,9 +171,8 @@ module.exports.create = async function (req, res, next) {
                     success: true,
                     message: "Product created sucessfully."
                 }
-            );
-        }
-    }
+            );}
+        } 
     catch (error) {
         console.error("Cannot create product", error);
         res.status(500).send("Invalid product create");
@@ -181,8 +180,8 @@ module.exports.create = async function (req, res, next) {
 }
 
 // To delete a product
-module.exports.delete = async function (req, res, next) {
-    try {
+module.exports.delete = async function(req, res, next) {
+  try {
         if (!req.body.seller || req.body.seller.trim() === "") {
             throw new Error('login is required.');
         }
@@ -203,28 +202,21 @@ module.exports.delete = async function (req, res, next) {
             );
         } else {
             return res.status(404).send("product not found");
-        }
+            }
 
     } catch (error) {
         console.error("Error in delete:", error);
         res.status(500).send("Invalid delete");
     }
-
-    // Logic to delete a product
-    res.send("Delete a product");
-  } catch (error) {
-    console.error("Error in delete:", error);
-    res.status(500).send("Invalid delete");
-  }
 }
 
-module.exports.hasAuthorization = async function (req, res, next) {
+module.exports.hasAuthorization = async function(req, res, next){
     console.log("Payload", req.auth);
     const product = await productsModel.findById(req.params.productID);
 
     let authorized = req.auth.id == product.sellerID;
     console.log(authorized);
-    if (!authorized) {
+    if(!authorized){
         return res.status('403').json(
             {
                 success: false,
