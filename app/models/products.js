@@ -23,7 +23,10 @@ let productsModel = mongoose.Schema(
                 message: 'Quantity must greater than 0'
             }
         },
-        status: Boolean,
+        status: {
+            type: Boolean,
+            default: true
+        },
         description: String,
         size: {
             h: Number,
