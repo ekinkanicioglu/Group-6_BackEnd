@@ -32,8 +32,14 @@ module.exports.userByID = async function (req, res, next) {
     }
 }
 
-module.exports.read = async function (req, res) {
+module.exports.read = function (req, res) {
+    req.profile.hashed_password = undefined
+    req.profile.salt = undefined
+    return res.json(req.profile)
+}
+//update users
 
+module.exports.update = async function (req, res, next) {
 
     try {
         
@@ -83,11 +89,13 @@ module.exports.create = async function (req, res, next) {
     }
 }
 
-module.exports.remove = async function (req, res, next){
-    try{
-        console.log("/deleteu/:userID");
-        const deleteUser = await Usermodel.findById(req.params.userID);
-        if (!deleteUser) {
+//remove users by id
+module.exports.remove = async function (req, res, next) {
+    try {
+        const userID = req.params.userID;
+        const result = await Usermodel.deleteOne({ _id: userID });
+
+        if (!result) {
             return res.status(404).send("User not found");
         }
 

@@ -10,7 +10,9 @@ userController.list);
 router.get('/getu/:userID', 
 authController.requireLogin,
 userController.userByID);
-
+router.put('/edit/:userID',
+ authController.requireLogin, 
+ userController.update);
 router.post('/signup',userController.create);
 router.delete('/delete/:userID',
 authController.requireLogin,

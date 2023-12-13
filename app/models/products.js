@@ -23,7 +23,7 @@ let productsModel = mongoose.Schema(
                 message: 'Quantity must greater than 0'
             }
         },
-        status: String,
+        status: Boolean,
         description: String,
         size: {
             h: Number,
@@ -42,6 +42,11 @@ let productsModel = mongoose.Schema(
                 message: 'Price must greater than 0'
             }
         },
+        qAa: [{
+            question : String,
+            answer : String
+             }],
+
         productCreated: {
             type: Date,
             default: Date.now,
@@ -50,6 +55,10 @@ let productsModel = mongoose.Schema(
 
         sellerID: {
             type: String
+        },
+
+        img: {
+            type:String
         }
     },
     {
