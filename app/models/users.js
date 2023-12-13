@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-let bcrypt = require('bcrypt');
 
 
 const UserSchema = new Schema({
@@ -43,6 +42,7 @@ const UserSchema = new Schema({
       type: Boolean,
       default: false
     }
+    
   },
     {
       collection: "users"
@@ -66,25 +66,13 @@ const UserSchema = new Schema({
         throw new Error('Password must be at least 6 characters.')
       }
       else {
-        this.hashed_password = this.hashPassword(password);
-      }
+         UserSchema.methods.authenticate(password);      }
     });
   
-  module.exports = async function (password) {
-    console.log("here");
-    try {
-      const saltRounds = 10;
-      const salt = await bcrypt.genSalt(saltRounds);
-      const hashedPassword = await bcrypt.hash(password, salt);
-      return hashedPassword;
-  } catch (error) {
-      console.error('Error hashing password:', error);
-      throw new Error('Error hashing password');
-  }
-    };
+ 
   
   UserSchema.methods.authenticate = function (password) {
-    return this.hashed_password === this.hashPassword(password);
+    return password;
   };
   
   // Ensure virtual fields are serialised.
